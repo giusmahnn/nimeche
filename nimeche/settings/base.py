@@ -25,7 +25,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = os.getenv('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+# DEBUG = True
 
 ALLOWED_HOSTS = []
 
@@ -129,17 +129,17 @@ MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 
 
 
-# Bootstrap5 settings
-BOOTSTRAP5 = {
-    'include_jquery': True,
-    'jquery_slim': True,
-    'javascript_in_head': True,
-    'theme_url': 'https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css',
-    'javascript_url': 'https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.min.js',
-    'javascript_cdn': True,
-    'css_url': 'https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css',
-    'css_cdn': True,
-}
+# # Bootstrap5 settings
+# BOOTSTRAP5 = {
+#     'include_jquery': True,
+#     'jquery_slim': True,
+#     'javascript_in_head': True,
+#     'theme_url': 'https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css',
+#     'javascript_url': 'https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.min.js',
+#     'javascript_cdn': True,
+#     'css_url': 'https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css',
+#     'css_cdn': True,
+# }
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
