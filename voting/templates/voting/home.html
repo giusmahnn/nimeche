@@ -1,4 +1,17 @@
 {% extends "base.html" %}
 {% load static %} {% block title %} Vote Here {% endblock title %} {% block content %}
-<h1>Vote App</h1>
+<section class="hero">
+  <div class="hero-content">
+    <h1 class="hero-title">Empower Your Voice</h1>
+    <p class="hero-description">Vote for the candidates who represent your values and make a difference in your community.</p>
+    <div class="hero-buttons">
+      <a href="#" class="btn">Check Results</a>
+      <a href="#" class="btn">See Candidates</a>
+    </div>
+  </div>
+  <div class="hero-image">
+    <img src="{% static 'image/hero-image.png' %}" alt="Students voting" />
+  </div>
+</section>
+
 {% endblock content %}

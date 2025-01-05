@@ -1,4 +1,152 @@
+:root {
+	--primary-color: #000957;
+	--secondary-color: #344CB7;
+	--accent-color: #FFEB00;
+	--text-color: white;
+}
 
-h1 {
-	color: red;
+* {
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+}
+
+html {
+	font-size: 16px;
+	font-family: 'Arial', sans-serif;
+	scroll-behavior: smooth;
+}
+
+body {
+	line-height: 1.6;
+	/* background-color: var(--primary-color); */
+	color: #333;
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+}
+
+a {
+	text-decoration: none;
+}
+
+.navbar {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	padding: 1rem 2rem;
+	background-color: var(--primary-color);
+	box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.logo h1 {
+	margin: 0;
+	font-size: 1.5rem;
+	color: var(--text-color);
+}
+
+.cta .buy-coffee-btn {
+	background-color: var(--secondary-color);
+	color: var(--text-color);
+	border: none;
+	padding: 0.5rem 1rem;
+	border-radius: 4px;
+	font-size: 1rem;
+	cursor: pointer;
+	transition: background-color 0.3s ease;
+}
+
+.cta .buy-coffee-btn:hover {
+	background-color: var(--accent-color);
+	color: var(--primary-color);
+}
+
+.hero {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	padding: 2rem;
+	background-color: var(--background-color);
+	color: var(--text-color);
+}
+
+.hero-content {
+	max-width: 50%;
+}
+
+.hero-title {
+	font-size: 2.5rem;
+	margin-bottom: 1rem;
+	color: var(--primary-color);
+}
+
+.hero-description {
+	font-size: 1.2rem;
+	margin-bottom: 2rem;
+	color: var(--primary-color);
+}
+
+.hero-buttons {
+	display: flex;
+	gap: 1rem;
+}
+
+.hero-buttons .btn {
+	background-color: var(--secondary-color);
+	color: var(--text-color);
+	text-decoration: none;
+	padding: 0.75rem 1.5rem;
+	border-radius: 4px;
+	font-size: 1rem;
+	transition: background-color 0.3s ease;
+}
+
+.hero-buttons .btn:hover {
+	background-color: var(--accent-color);
+	color: var(--primary-color);
+}
+
+.hero-image {
+	max-width: 45%;
+}
+
+.hero-image img {
+	width: 100%;
+	height: auto;
+	border-radius: 8px;
+	box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+@media (max-width: 768px) {
+	.hero {
+		flex-direction: column;
+		text-align: center;
+		padding: 1rem;
+	}
+
+	.hero-content {
+		max-width: 100%;
+		margin-bottom: 1.5rem;
+	}
+
+	.hero-title {
+		font-size: 2rem;
+	}
+
+	.hero-description {
+		font-size: 1rem;
+	}
+
+	.hero-buttons {
+		justify-content: center;
+	}
+
+	.hero-image {
+		max-width: 100%;
+	}
+
+	.hero-image img {
+		width: 100%;
+		height: auto;
+		border-radius: 4px;
+	}
 }
