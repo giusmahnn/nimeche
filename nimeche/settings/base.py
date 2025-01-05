@@ -15,7 +15,11 @@ from dotenv import load_dotenv
 
 load_dotenv()
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
-BASE_DIR = Path(__file__).resolve().parent.parent
+# Add an extra .parent to go up one more directory where the settings.py file is located
+BASE_DIR = Path(__file__).resolve().parent.parent.parent
+
+# print(f"BASE_DIR: {BASE_DIR}")
+# print(f"TEMPLATES_DIRS: {os.path.join(BASE_DIR, 'templates')}")
 
 
 # Quick-start development settings - unsuitable for production
@@ -27,7 +31,7 @@ SECRET_KEY = os.getenv('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 # DEBUG = True
 
-ALLOWED_HOSTS = []
+
 
 
 # Application definition
@@ -58,7 +62,7 @@ ROOT_URLCONF = 'nimeche.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(BASE_DIR, "templates")], # This is the path to the templates folder
+        'DIRS': [os.path.join(BASE_DIR / 'templates')], # Add the templates directory to the TEMPLATES setting 
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -70,6 +74,7 @@ TEMPLATES = [
         },
     },
 ]
+
 
 WSGI_APPLICATION = 'nimeche.wsgi.application'
 
@@ -113,12 +118,12 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
 
 STATIC_URL = '/static/'
-STATICFILES_DIRS = [os.path.join(BASE_DIR, "static")]
-STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
+STATICFILES_DIRS = [BASE_DIR / "static"] # Add the static directory to the STATICFILES_DIRS setting
+STATIC_ROOT = BASE_DIR / "staticfiles" # Add the staticfiles directory to the STATIC_ROOT setting
 
 
-MEDIA_URL = "/media/"
-MEDIA_ROOT = os.path.join(BASE_DIR, "media")
+MEDIA_URL = "/media/" # Add the media URL to the MEDIA_URL setting
+MEDIA_ROOT = BASE_DIR / "media" # Add the media directory to the MEDIA_ROOT setting
 
 
 
