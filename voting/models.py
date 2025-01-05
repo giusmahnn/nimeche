@@ -14,6 +14,9 @@ class Position(BaseModel):
     name = models.CharField(max_length=50)
     description = models.TextField(null=True, blank=True)
 
+    def __str__(self):
+        return f"{self.name}"
+
 
 class Candidate(BaseModel):
     name = models.CharField(max_length=100)
