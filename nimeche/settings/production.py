@@ -4,6 +4,7 @@ import os
 load_dotenv()
 
 DEBUG = False
+ALLOWED_HOSTS = []
 
 DATABASES = {
     'default': {

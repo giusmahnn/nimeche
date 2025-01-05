@@ -3,7 +3,8 @@ from .base import *
 import os
 load_dotenv()
 
-DEBUG = True
+DEBUG = False
+ALLOWED_HOSTS = []
 
 DATABASES = {
     'default': {
