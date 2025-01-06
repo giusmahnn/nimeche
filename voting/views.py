@@ -5,3 +5,8 @@ from django.views import View
 class HomePage(View):
 	def get(self, request):
 		return render(request, "voting/home.html")
+	
+
+class DetailPage(View):
+	def get(self, request):
+		return render(request, "voting/vote-detail.html")
