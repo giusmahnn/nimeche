@@ -31,6 +31,9 @@ a {
 
 /* Nav Bar */
 .navbar {
+	position: sticky;
+	top: 0;
+	z-index: 1000;
 	display: flex;
 	justify-content: space-between;
 	align-items: center;
@@ -269,4 +272,92 @@ a {
 	font-size: 0.9rem;
 	color: rgba(255, 255, 255, 0.8);
 	margin: 0;
+}
+
+/* Detail Page */
+.detail-header {
+	padding: 2rem 1rem;
+	background-color: var(--secondary-color);
+	color: var(--text-color);
+	text-align: center;
+	border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.detail-title {
+	font-size: 2.5rem;
+	margin-bottom: 0.5rem;
+}
+
+.detail-description {
+	font-size: 1.2rem;
+	color: var(--text-color);
+	max-width: 800px;
+	margin: 0 auto;
+	line-height: 1.6;
+}
+
+/* Detail Page Candidates */
+.candidates-section {
+	padding: 2rem 1rem;
+	background-color: var(--primary-color);
+	color: var(--text-color);
+}
+
+.candidates-title {
+	text-align: center;
+	font-size: 2rem;
+	margin-bottom: 1.5rem;
+}
+
+.candidates-container {
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+	gap: 1.5rem;
+}
+
+.candidate-card {
+	background-color: var(--secondary-color);
+	border-radius: 8px;
+	overflow: hidden;
+	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.candidate-image {
+	width: 100%;
+	height: 200px;
+	object-fit: cover;
+}
+
+.candidate-details {
+	padding: 1rem;
+}
+
+.candidate-name {
+	font-size: 1.5rem;
+	margin-bottom: 0.5rem;
+}
+
+.candidate-position,
+.candidate-bio,
+.candidate-votes {
+	margin: 0.5rem 0;
+	font-size: 1rem;
+	color: #dddddd;
+}
+
+.candidate-vote-btn {
+	display: inline-block;
+	margin-top: 1rem;
+	padding: 0.5rem 1rem;
+	background-color: var(--accent-color);
+	color: var(--secondary-color);
+	text-decoration: none;
+	font-weight: bold;
+	border-radius: 4px;
+	transition: background-color 0.3s ease;
+}
+
+.candidate-vote-btn:hover {
+	background-color: var(--primary-color);
+	color: var(--text-color);
 }

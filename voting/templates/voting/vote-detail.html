@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}
+  Vote Details
+{% endblock title %}
+{% block content %}
+<!-- Header -->
+  <header class="detail-header">
+  <h1 class="detail-title">Position: President</h1>
+  <p class="detail-description">
+    Learn more about the candidates running for this position and cast your vote to make a difference.
+  </p>
+</header>
+
+<!-- Candidates -->
+ <section class="candidates-section">
+  <h2 class="candidates-title">Candidates for President</h2>
+  <div class="candidates-container">
+    <div class="candidate-card">
+      <img src="{% static 'image/hero-image.png' %}" alt="Candidate Image" class="candidate-image">
+      <div class="candidate-details">
+        <h3 class="candidate-name">David Michael</h3>
+        <p class="candidate-position">Running for: President</p>
+        <p class="candidate-bio">
+          A student leader passionate about education reform and campus welfare.
+        </p>
+        <p class="candidate-votes">Votes: 120</p>
+        <a href="#" class="candidate-vote-btn">Vote</a>
+      </div>
+    </div>
+
+    <div class="candidate-card">
+      <img src="{% static 'image/hero-image.png' %}" alt="Candidate Image" class="candidate-image">
+      <div class="candidate-details">
+        <h3 class="candidate-name">Remigius Mgbeme</h3>
+        <p class="candidate-position">Running for: President</p>
+        <p class="candidate-bio">
+          Dedicated to chasing women, Tufiakwa.
+        </p>
+        <p class="candidate-votes">Votes: 98</p>
+        <a href="#" class="candidate-vote-btn">Vote</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+{% endblock content %}
