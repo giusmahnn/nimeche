@@ -22,11 +22,14 @@
     <p class="positions-description">Explore the positions being contested and make your vote count!</p>
   </div>
   <div class="positions-list">
+    {% for position in positions %}
     <div class="position-card">
-      <h3 class="position-name">President</h3>
-      <p class="position-description">Lead and represent the student body in all capacities.</p>
-      <a href="{% url 'vote-detail' %}" class="btn vote-btn">Vote</a>
+      <h3 class="position-name">{{ position.name }}</h3>
+      <p class="position-description">{{ position.description }}</p>
+      <a href="{% url 'vote-detail' position.id %}" class="vote-btn">View Candidates</a>
     </div>
+    {% endfor %}
+    <!--
     <div class="position-card">
       <h3 class="position-name">Secretary</h3>
       <p class="position-description">Manage records and facilitate communication across teams.</p>
@@ -52,6 +55,7 @@
       <p class="position-description">Manage records and facilitate communication across teams.</p>
       <a href="#" class="btn vote-btn">Vote</a>
     </div>
+    -->
   </div>
 </section>
 
