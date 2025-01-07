@@ -18,7 +18,7 @@
   <div class="candidates-container">
     {% for candidate in candidates %}
     <div class="candidate-card">
-      <img src="" alt="Candidate Image" class="candidate-image">
+      <img src="{{ candidate.image }}" alt="Candidate Image" class="candidate-image">
       <div class="candidate-details">
         <h3 class="candidate-name">{{ candidate.name }}</h3>
         <p class="candidate-position">Running for: {{ position.name }}</p>

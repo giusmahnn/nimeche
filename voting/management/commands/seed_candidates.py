@@ -1,12 +1,14 @@
 import random
 from django.core.management.base import BaseCommand
 from voting.models import Candidate, Position
+from faker import Faker 
 
 
 class Command(BaseCommand):
     help = 'Create a new candidate'
 
     def handle(self, *args, **options):
+        fake=Faker()
         candidates_list = [
             "Emeka Nwosu",
             "Fatima Yusuf",
@@ -45,7 +47,8 @@ class Command(BaseCommand):
             candidate = Candidate(
                 name=candidate_name,
                 introduction=f"My name is {candidate_name} and I am running for the position of {position.name}.",
-                position=position
+                position=position,
+                image=fake.image_url()
             )
             candidates.append(candidate)
         Candidate.objects.bulk_create(candidates)
