@@ -6,10 +6,10 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):  
         
-        confirmed = input("Are you sure you want to delete all Positions, Candidates, and Voters? (yes/no): ")  
-        if confirmed.lower() != 'yes':  
-            self.stdout.write(self.style.WARNING('Deletion canceled.'))  
-            return  
+        # confirmed = input("Are you sure you want to delete all Positions, Candidates, and Voters? (yes/no): ")  
+        # if confirmed.lower() != 'yes':  
+        #     self.stdout.write(self.style.WARNING('Deletion canceled.'))  
+        #     return  
 
         # Position.objects.all().delete()  
         Candidate.objects.all().delete()  
