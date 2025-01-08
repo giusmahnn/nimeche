@@ -1,7 +1,7 @@
 import random
 from django.core.management.base import BaseCommand
 from voting.models import Candidate, Position
-from faker import Faker 
+from faker import Faker  # type: ignore
 
 
 class Command(BaseCommand):

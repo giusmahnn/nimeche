@@ -11,6 +11,15 @@
     Learn more about the candidates running for this position and cast your vote to make a difference.
   </p>
 </header>
+{% if messages %}
+  <div class="messages">
+    {% for message in messages %}
+      <div class="alert {% if message.tags %}alert-{{ message.tags }}{% endif %}">
+        {{ message }}
+      </div>
+    {% endfor %}
+  </div>
+{% endif %}
 
 <!-- Candidates -->
 <section class="candidates-section">
@@ -24,7 +33,7 @@
         <p class="candidate-position">Running for: {{ position.name }}</p>
         <p class="candidate-bio">{{ candidate.introduction }}</p>
         <p class="candidate-votes">Votes: {{ candidate.votes }}</p>
-        <a href="#" class="candidate-vote-btn">Vote</a>
+        <a href="{% url 'votes' candidate.id %}" class="candidate-vote-btn">Vote</a>
       </div>
     </div>
     {% endfor %}
