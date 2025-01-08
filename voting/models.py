@@ -30,8 +30,8 @@ class Candidate(BaseModel):
     
 
 class Voter(BaseModel):
-    matric_number = models.CharField(max_length=100)
-    ip_address = models.CharField(max_length=100, null=True, blank=True)
+    matric_number = models.CharField(max_length=50, unique=True)
+    ip_address = models.GenericIPAddressField(blank=True, null=True) 
 
     def __str__(self):
         return f"{self.matric_number}"
