@@ -361,3 +361,64 @@ a {
 	background-color: var(--primary-color);
 	color: var(--text-color);
 }
+
+.hello {
+	color: red;
+}
+
+.form-container {
+    background: #ffffff;
+    padding: 2rem;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 400px;
+    margin: 2rem auto;
+    text-align: center;
+}
+
+.form-container h1 {
+    margin-bottom: 1rem;
+    font-size: 1.5rem;
+    color: var(--secondary-color);
+}
+
+.form-container form {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.form-container label {
+    font-size: 1rem;
+    color: #555555;
+    text-align: left;
+}
+
+.form-container input {
+    padding: 0.75rem;
+    border: 1px solid #cccccc;
+    border-radius: 4px;
+    font-size: 1rem;
+    width: 100%;
+}
+
+.form-container input:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 3px var(--primary-color);
+}
+
+.form-container button {
+    padding: 0.75rem;
+    background-color: var(--primary-color);
+    color: #ffffff;
+    border: none;
+    border-radius: 4px;
+    font-size: 1rem;
+    cursor: pointer;
+}
+
+.form-container button:hover {
+    background-color: var(--secondary-color);
+}

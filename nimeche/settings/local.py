@@ -11,3 +11,5 @@ DATABASES = {
         'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
+
+ENABLE_MATRIC_NUMBER_VALIDATION = False
