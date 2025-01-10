@@ -7,9 +7,10 @@ from rest_framework import status
 from django.contrib import messages
 from django.conf import settings
 from urllib.parse import urlencode
-
+from django.db.models import F, Sum
 from voting.models import Candidate, Position, Voter
 from voting.serializers import VoterSerializer
+from voting.utils import get_winners
 
 
 class HomePage(View):
@@ -24,9 +25,11 @@ class HomePage(View):
 class DetailPage(View):
 	def get(self, request, position_id):
 		if not request.session.get("voter"):
-			query_params = urlencode({"position": position_id})
-			url = f"{reverse('matric_number')}?{query_params}"
-			return redirect(url)
+			# query_params = urlencode({"position": position_id})
+			# url = f"{reverse('matric_number')}?{query_params}"
+			# return redirect(url)
+			request.session["position_id"] = position_id
+			return redirect(reverse("matric_number"))
 		position = get_object_or_404(
 			Position.objects.prefetch_related('candidate_set'),
 			id=position_id
@@ -58,16 +61,15 @@ class VotesView(View):
 
 		if voter_data:
 			matric_number = voter_data.get("matric_number")
-			ip_address = voter_data.get("ip_address")
+			# ip_address = voter_data.get("ip_address")
 
-			voter = Voter.objects.filter(matric_number=matric_number, ip_address=ip_address).first()
+			voter = Voter.objects.filter(matric_number=matric_number).first()
 			if voter:
 				voted_positions = request.session.get("voted_positions", [])
 				if candidate.position.id in voted_positions:
 					messages.info(request, "You have already voted for this position.")
 					return redirect(reverse('vote-detail', kwargs={'position_id': candidate.position.id}))
 
-				from django.db.models import F
 				candidate.votes = F('votes') + 1
 				candidate.save()
 
@@ -85,13 +87,58 @@ class VotesView(View):
 		
 
 class MatricNumber(View):
-	def get(self, requesst):
-		return render(requesst, "voting/matric-number.html")
+	"""
+	Handles the matric number validation process for voters.
+	"""
+	def get(self, request):
+		return render(request, "voting/matric-number.html")
 	
 	def post(self, request):
 		if settings.ENABLE_MATRIC_NUMBER_VALIDATION:
-			# Validate maric number here
-			pass
-		request.session["voter"] = request.POST.get("matric_number")
-		position = int(request.GET.get("position", 6))
-		return redirect(reverse("vote-detail", args=[position]))
+			matric_number = request.POST.get('matric_number').upper()
+			position_id = request.session.get("position_id")
+			try:
+				voter = Voter.objects.get(matric_number=matric_number)
+			except Voter.DoesNotExist:
+				messages.error(request, "Invalid matric number.")
+				return redirect(reverse("matric_number"))
+		request.session["voter"] = {
+			"matric_number": voter.matric_number}
+		return redirect(reverse("vote-detail", kwargs={'position_id': position_id}))
+
+
+
+
+class AdminDashboardView(View):
+	def get(self, request):
+		registered_voters = Voter.objects.count()
+		positions = Position.objects.count()
+		candidates = Candidate.objects.count()
+		total_votes = Candidate.objects.aggregate(total_votes=Sum('votes'))['total_votes']
+		winner = self.get_winners()
+
+		context = {
+			"registered_voters": registered_voters,
+			"positions": positions,
+			"candidates": candidates,
+			"total_votes": total_votes,
+			"winner": winner
+		}
+		return render(request, "voting/admin-dashboard.html", context)
+
+
+	def get_winners(request):
+		winners = []
+		positions = Position.objects.prefetch_related("candidte_set")
+		for position in positions:
+			winner = position.candidate_set.order_by("-votes").first()
+			if winner:
+				winners.append({
+					"position_name": position.name,
+					"winner_name": winner.name,
+					"winner_votes": winner.votes,
+					"total_votes": position.candidate_set.aggregate(total_votes=Sum('votes'))['total_votes'] or 0,
+				})
+		return winners
+	
+    
