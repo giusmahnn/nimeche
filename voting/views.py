@@ -1,16 +1,15 @@
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse
 from django.views import View
-from rest_framework.views import APIView
-from rest_framework.response import Response
-from rest_framework import status
+# from rest_framework.views import APIView
+# from rest_framework.response import Response
+# from rest_framework import status
 from django.contrib import messages
 from django.conf import settings
 from urllib.parse import urlencode
 from django.db.models import F, Sum
 from voting.models import Candidate, Position, Voter
 from voting.serializers import VoterSerializer
-from voting.utils import get_winners
 
 
 class HomePage(View):
@@ -41,13 +40,13 @@ class DetailPage(View):
 			}
 		return render(request, "voting/vote-detail.html", context)
 
-class ValidateVoter(APIView):
-	def post(self, request):
-		serializers = VoterSerializer(data=request.data, context={'request': request})
-		if serializers.is_valid():
-			serializers.save()
-			return Response(serializers.data, status=status.HTTP_201_CREATED)
-		return Response(serializers.errors, status=status.HTTP_400_BAD_REQUEST)
+# class ValidateVoter(APIView):
+# 	def post(self, request):
+# 		serializers = VoterSerializer(data=request.data, context={'request': request})
+# 		if serializers.is_valid():
+# 			serializers.save()
+# 			return Response(serializers.data, status=status.HTTP_201_CREATED)
+# 		return Response(serializers.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 
