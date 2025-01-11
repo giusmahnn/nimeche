@@ -1,4 +1,6 @@
 from django.shortcuts import get_object_or_404, redirect, render
+from django.contrib.auth import authenticate, login, get_user_model
+from voting.utils import generate_jwt_token
 from django.urls import reverse
 from django.views import View
 # from rest_framework.views import APIView
@@ -7,9 +9,10 @@ from django.views import View
 from django.contrib import messages
 from django.conf import settings
 from urllib.parse import urlencode
+from django.utils.decorators import method_decorator
 from django.db.models import F, Sum
 from voting.models import Candidate, Position, Voter
-from voting.serializers import VoterSerializer
+from voting.utils import decode_jwt_token, generate_jwt_token
 
 
 class HomePage(View):
@@ -39,14 +42,6 @@ class DetailPage(View):
 			"candidates": candidates
 			}
 		return render(request, "voting/vote-detail.html", context)
-
-# class ValidateVoter(APIView):
-# 	def post(self, request):
-# 		serializers = VoterSerializer(data=request.data, context={'request': request})
-# 		if serializers.is_valid():
-# 			serializers.save()
-# 			return Response(serializers.data, status=status.HTTP_201_CREATED)
-# 		return Response(serializers.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 
@@ -107,7 +102,20 @@ class MatricNumber(View):
 
 
 
+def login_required(view_func):
+	
+	def wrapper(request, *args, **kwargs):
+		token = request.session.get("jwt_token")
+		payload = decode_jwt_token(token)
+		if isinstance(payload, dict) and payload.get("is_staff"):
+			request.user = payload
+			return view_func(request, *args, **kwargs)
+		
+		return redirect("admin-login")
+	return wrapper
 
+
+@method_decorator(login_required, name='dispatch')
 class AdminDashboardView(View):
 	def get(self, request):
 		registered_voters = Voter.objects.count()
@@ -126,9 +134,9 @@ class AdminDashboardView(View):
 		return render(request, "voting/admin-dashboard.html", context)
 
 
-	def get_winners(request):
+	def get_winners(self):
 		winners = []
-		positions = Position.objects.prefetch_related("candidte_set")
+		positions = Position.objects.prefetch_related("candidate_set")
 		for position in positions:
 			winner = position.candidate_set.order_by("-votes").first()
 			if winner:
@@ -139,5 +147,29 @@ class AdminDashboardView(View):
 					"total_votes": position.candidate_set.aggregate(total_votes=Sum('votes'))['total_votes'] or 0,
 				})
 		return winners
+
+
+
+class LoginView(View):
 	
-    
+	def get(self, request):
+		return render(request, "voting/admin-login.html")
+
+	def post(self, request):
+		username = request.POST.get('username')
+		password = request.POST.get('password')
+		user = authenticate(username=username, password=password)
+		if user:
+			login(request, user)
+			jwt_token = generate_jwt_token(user)
+			request.session["jwt_token"] = jwt_token
+			return redirect("admin-dashboard")
+		else:
+			messages.error(request, "Invalid username or password.")
+			return redirect("admin-login")
+
+
+class LogoutView(View):
+	def get(self, request):
+		request.session.flush()
+		return redirect("admin-login")			

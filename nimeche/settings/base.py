@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 import os
 from pathlib import Path
 from dotenv import load_dotenv
+import datetime
 
 load_dotenv()
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -146,3 +147,9 @@ MEDIA_ROOT = BASE_DIR / "media" # Add the media directory to the MEDIA_ROOT sett
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+
+# JWT settings
+JWT_SECRET_KEY = os.getenv("JWT_SECRET_KEY")  # Replace with a secure, unique key
+JWT_ALGORITHM = os.getenv('JWT_ALGORITHM')
+JWT_EXPIRATION_DELTA = datetime.timedelta(minutes=30)
