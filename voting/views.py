@@ -1,14 +1,10 @@
 from django.shortcuts import get_object_or_404, redirect, render
-from django.contrib.auth import authenticate, login, get_user_model
+from django.contrib.auth import authenticate, login
 from voting.utils import generate_jwt_token
 from django.urls import reverse
 from django.views import View
-# from rest_framework.views import APIView
-# from rest_framework.response import Response
-# from rest_framework import status
 from django.contrib import messages
 from django.conf import settings
-from urllib.parse import urlencode
 from django.utils.decorators import method_decorator
 from django.db.models import F, Sum
 from voting.models import Candidate, Position, Voter
