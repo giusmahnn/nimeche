@@ -1,14 +1,13 @@
+from django.http import HttpResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.contrib.auth import authenticate, login
-from voting.utils import generate_jwt_token
-from django.urls import reverse
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.urls import reverse, reverse_lazy
 from django.views import View
 from django.contrib import messages
 from django.conf import settings
-from django.utils.decorators import method_decorator
 from django.db.models import F, Sum
 from voting.models import Candidate, Position, Voter
-from voting.utils import decode_jwt_token, generate_jwt_token
 
 
 class HomePage(View):
@@ -106,22 +105,8 @@ class MatricNumber(View):
 		return redirect(reverse("vote-detail", kwargs={'position_id': position_id}))
 
 
-
-def login_required(view_func):
-	
-	def wrapper(request, *args, **kwargs):
-		token = request.session.get("jwt_token")
-		payload = decode_jwt_token(token)
-		if isinstance(payload, dict) and payload.get("is_staff"):
-			request.user = payload
-			return view_func(request, *args, **kwargs)
-		
-		return redirect("admin-login")
-	return wrapper
-
-
-@method_decorator(login_required, name='dispatch')
-class AdminDashboardView(View):
+class AdminDashboardView(LoginRequiredMixin, View):
+	login_url = reverse_lazy("admin-login")
 	def get(self, request):
 		registered_voters = Voter.objects.count()
 		positions = Position.objects.count()
@@ -166,8 +151,6 @@ class LoginView(View):
 		user = authenticate(username=username, password=password)
 		if user:
 			login(request, user)
-			jwt_token = generate_jwt_token(user)
-			request.session["jwt_token"] = jwt_token
 			return redirect("admin-dashboard")
 		else:
 			messages.error(request, "Invalid username or password.")
