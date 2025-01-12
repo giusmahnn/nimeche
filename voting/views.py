@@ -45,24 +45,33 @@ class VotesView(View):
 	def get(self, request, candidate_id):
 		candidate = get_object_or_404(Candidate, id=candidate_id)
 		voter_data = request.session.get("voter")
+
+		
 		if not voter_data:
 			messages.error(request, "You need to log in to vote.")
 			return redirect(reverse('home'))
 
+		# Get the voter's information
 		if voter_data:
 			matric_number = voter_data.get("matric_number")
 			# ip_address = voter_data.get("ip_address")
 
 			voter = Voter.objects.filter(matric_number=matric_number).first()
 			if voter:
-				voted_positions = request.session.get("voted_positions", [])
-				if candidate.position.id in voted_positions:
+				# check if the voter has already voted for the position
+				if voter.voted_position.filter(id=candidate.position.id).exists():
 					messages.info(request, "You have already voted for this position.")
 					return redirect(reverse('vote-detail', kwargs={'position_id': candidate.position.id}))
 
+				# update the candidate's votes
 				candidate.votes = F('votes') + 1
 				candidate.save()
 
+				# update the voter's voted_position
+				voter.voted_position.add(candidate.position)
+
+				# session handling
+				voted_positions = request.session.get("voted_positions", [])
 				voted_positions.append(candidate.position.id)
 				request.session["voted_positions"] = voted_positions
 
