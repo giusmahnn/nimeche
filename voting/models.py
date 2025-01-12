@@ -31,7 +31,8 @@ class Candidate(BaseModel):
 
 class Voter(BaseModel):
     matric_number = models.CharField(max_length=50, unique=True)
-    ip_address = models.GenericIPAddressField(blank=True, null=True) 
+    ip_address = models.GenericIPAddressField(blank=True, null=True)
+    voted_position = models.ManyToManyField(Position, blank=True)
 
     def __str__(self):
         return f"{self.matric_number}"
