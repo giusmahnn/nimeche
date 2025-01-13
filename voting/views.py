@@ -45,44 +45,44 @@ class VotesView(View):
 		candidate = get_object_or_404(Candidate, id=candidate_id)
 		voter_data = request.session.get("voter")
 
-		
 		if not voter_data:
 			messages.error(request, "You need to log in to vote.")
 			return redirect(reverse('home'))
 
-		# Get the voter's information
-		if voter_data:
-			matric_number = voter_data.get("matric_number")
-			# ip_address = voter_data.get("ip_address")
+		matric_number = voter_data.get("matric_number")
+		# ip_address = voter_data.get("ip_address")
 
+		if settings.ENABLE_MATRIC_NUMBER_VALIDATION:
 			voter = Voter.objects.filter(matric_number=matric_number).first()
-			if voter:
-				# check if the voter has already voted for the position
-				if voter.voted_position.filter(id=candidate.position.id).exists():
-					messages.info(request, "You have already voted for this position.")
-					return redirect(reverse('vote-detail', kwargs={'position_id': candidate.position.id}))
-
-				# update the candidate's votes
-				candidate.votes = F('votes') + 1
-				candidate.save()
-
-				# update the voter's voted_position
-				voter.voted_position.add(candidate.position)
-
-				# session handling
-				voted_positions = request.session.get("voted_positions", [])
-				voted_positions.append(candidate.position.id)
-				request.session["voted_positions"] = voted_positions
-
-				messages.success(request, "Your vote has been recorded.")
-				return redirect(reverse('vote-detail', kwargs={'position_id': candidate.position.id}))
-			else:
+			if not voter:
 				messages.error(request, "Invalid voter information.")
 				return redirect(reverse('home'))
+			# Check if the voter has already voted for this position
+			if voter.voted_positions.filter(id=candidate.position.id).exists():
+				messages.info(request, "You have already voted for this position.")
+				return redirect(reverse('vote-detail', kwargs={'position_id': candidate.position.id}))
 		else:
-			messages.error(request, "You need to log in to vote.")
-			return redirect(reverse('home'))
-		
+			# Check if the voter has already voted for this position using session data
+			voted_positions = request.session.get("voted_positions", [])
+			if candidate.position.id in voted_positions:
+				messages.info(request, "You have already voted for this position.")
+				return redirect(reverse('vote-detail', kwargs={'position_id': candidate.position.id}))
+
+		# Record the vote
+		candidate.votes = F('votes') + 1
+		candidate.save()
+
+		if settings.ENABLE_MATRIC_NUMBER_VALIDATION:
+			# Mark this position as voted in the voter model
+			voter.voted_positions.add(candidate.position)
+		else:
+			# Update session data
+			voted_positions.append(candidate.position.id)
+			request.session["voted_positions"] = voted_positions
+
+		messages.success(request, "Your vote has been recorded.")
+		return redirect(reverse('vote-detail', kwargs={'position_id': candidate.position.id}))
+
 
 class MatricNumber(View):
 	"""
@@ -173,4 +173,4 @@ class LoginView(View):
 class LogoutView(View):
 	def get(self, request):
 		request.session.flush()
-		return redirect("admin-login")			
+		return redirect("admin-login")
