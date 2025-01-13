@@ -92,17 +92,30 @@ class MatricNumber(View):
 		return render(request, "voting/matric-number.html")
 	
 	def post(self, request):
+		matric_number = request.POST.get('matric_number').upper()
+		position_id = request.session.get("position_id")
 		if settings.ENABLE_MATRIC_NUMBER_VALIDATION:
-			matric_number = request.POST.get('matric_number').upper()
-			position_id = request.session.get("position_id")
+			# Validation enabled
 			try:
 				voter = Voter.objects.get(matric_number=matric_number)
+				request.session["voter"] = {
+                    "matric_number": voter.matric_number
+                }
 			except Voter.DoesNotExist:
 				messages.error(request, "Invalid matric number.")
 				return redirect(reverse("matric_number"))
-		request.session["voter"] = {
-			"matric_number": voter.matric_number}
-		return redirect(reverse("vote-detail", kwargs={'position_id': position_id}))
+			
+			return redirect(reverse("vote-detail", kwargs={'position_id': position_id}))
+		else:
+			# Validation disabled
+			request.session["voter"] = {
+				"matric_number": matric_number
+			}
+		if position_id:
+			return redirect(reverse("vote-detail", kwargs={'position_id': position_id}))
+		else:
+			return redirect(reverse("home"))
+
 
 
 class AdminDashboardView(LoginRequiredMixin, View):
