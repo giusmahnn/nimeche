@@ -58,7 +58,7 @@ class VotesView(View):
 				messages.error(request, "Invalid voter information.")
 				return redirect(reverse('home'))
 			# Check if the voter has already voted for this position
-			if voter.voted_positions.filter(id=candidate.position.id).exists():
+			if voter.voted_position.filter(id=candidate.position.id).exists():
 				messages.info(request, "You have already voted for this position.")
 				return redirect(reverse('vote-detail', kwargs={'position_id': candidate.position.id}))
 		else:
