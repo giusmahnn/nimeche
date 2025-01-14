@@ -26,7 +26,7 @@
     <div class="position-card">
       <h3 class="position-name">{{ position.name }}</h3>
       <p class="position-description">{{ position.description }}</p>
-      <a href="{% url 'vote-detail' position.id %}" class="vote-btn">View Candidates</a>
+      <a href="{% url 'vote-detail' position.slug %}" class="vote-btn">View Candidates</a>
     </div>
     {% endfor %}
     <!--

@@ -160,3 +160,4 @@ dmypy.json
 *.egg-info/
 db.sqlite3
 voting/__pycache__/admin.cpython-310.pyc
+migrations

@@ -11,8 +11,8 @@ class Command(BaseCommand):
         #     self.stdout.write(self.style.WARNING('Deletion canceled.'))  
         #     return  
 
-        # Position.objects.all().delete()  
+        Position.objects.all().delete()  
         Candidate.objects.all().delete()  
-        # Voter.objects.all().delete()  
+        Voter.objects.all().delete()  
 
         self.stdout.write(self.style.SUCCESS('Successfully deleted all data from Positions, Candidates, and Voters.'))

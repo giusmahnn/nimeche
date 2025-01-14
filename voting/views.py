@@ -20,16 +20,16 @@ class HomePage(View):
 	
 
 class DetailPage(View):
-	def get(self, request, position_id):
+	def get(self, request, slug):
 		if not request.session.get("voter"):
 			# query_params = urlencode({"position": position_id})
 			# url = f"{reverse('matric_number')}?{query_params}"
 			# return redirect(url)
-			request.session["position_id"] = position_id
+			request.session["position_slug"] = slug
 			return redirect(reverse("matric_number"))
 		position = get_object_or_404(
 			Position.objects.prefetch_related('candidate_set'),
-			id=position_id
+			slug=slug
 			)
 		candidates = position.candidate_set.all()
 		context = {
@@ -37,7 +37,6 @@ class DetailPage(View):
 			"candidates": candidates
 			}
 		return render(request, "voting/vote-detail.html", context)
-
 
 
 class VotesView(View):
@@ -58,15 +57,15 @@ class VotesView(View):
 				messages.error(request, "Invalid voter information.")
 				return redirect(reverse('home'))
 			# Check if the voter has already voted for this position
-			if voter.voted_position.filter(id=candidate.position.id).exists():
+			if voter.voted_positions.filter(id=candidate.position.id).exists():
 				messages.info(request, "You have already voted for this position.")
-				return redirect(reverse('vote-detail', kwargs={'position_id': candidate.position.id}))
+				return redirect(reverse('vote-detail', kwargs={'slug': candidate.position.slug}))
 		else:
 			# Check if the voter has already voted for this position using session data
 			voted_positions = request.session.get("voted_positions", [])
 			if candidate.position.id in voted_positions:
 				messages.info(request, "You have already voted for this position.")
-				return redirect(reverse('vote-detail', kwargs={'position_id': candidate.position.id}))
+				return redirect(reverse('vote-detail', kwargs={'slug': candidate.position.slug}))
 
 		# Record the vote
 		candidate.votes = F('votes') + 1
@@ -81,7 +80,7 @@ class VotesView(View):
 			request.session["voted_positions"] = voted_positions
 
 		messages.success(request, "Your vote has been recorded.")
-		return redirect(reverse('vote-detail', kwargs={'position_id': candidate.position.id}))
+		return redirect(reverse('vote-detail', kwargs={'slug': candidate.position.slug}))
 
 
 class MatricNumber(View):
@@ -93,9 +92,9 @@ class MatricNumber(View):
 	
 	def post(self, request):
 		matric_number = request.POST.get('matric_number').upper()
-		position_id = request.session.get("position_id")
+		position_slug = request.session.get("position_slug")
 		if settings.ENABLE_MATRIC_NUMBER_VALIDATION:
-			# Validation enabled
+			# Matric number validation is enabled
 			try:
 				voter = Voter.objects.get(matric_number=matric_number)
 				request.session["voter"] = {
@@ -105,14 +104,14 @@ class MatricNumber(View):
 				messages.error(request, "Invalid matric number.")
 				return redirect(reverse("matric_number"))
 			
-			return redirect(reverse("vote-detail", kwargs={'position_id': position_id}))
+			return redirect(reverse("vote-detail", kwargs={'slug': position_slug}))
 		else:
-			# Validation disabled
+			# Matric number validation is disabled
 			request.session["voter"] = {
 				"matric_number": matric_number
 			}
-		if position_id:
-			return redirect(reverse("vote-detail", kwargs={'position_id': position_id}))
+		if position_slug:
+			return redirect(reverse("vote-detail", kwargs={'position_slug': position_slug}))
 		else:
 			return redirect(reverse("home"))
 
