@@ -1,11 +1,34 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
-<body>
-    <h1>welcome {{ user.first_name }}</h1>
-</body>
-</html>
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+
+<section class="positions">
+    <div class="position-card">
+      <h3 class="position-name">Registered Voters</h3>
+      <p class="position-description">{{ registered_voters }}.</p>
+    </div>
+    <div class="position-card">
+        <h3 class="position-name">Positions</h3>
+        <p class="position-description">{{ positions }}.</p>
+    </div>
+    <div class="position-card">
+        <h3 class="position-name">Candidates</h3>
+        <p class="position-description">{{ candidates }}.</p>
+    </div>
+    <div class="position-card">
+        <h3 class="position-name">Total Votes</h3>
+        <p class="position-description">{{ total_votes }}.</p>
+    </div>
+</section>
+<section class="winners">
+    <h3>Winners</h3>
+    <ul>
+        {% for winner in winner %}
+            <li>Position: {{ winner.position_name }}li>
+            <li>Candidate: : {{ winner.winner_name }}</li>
+            <li>Votes: {{ winner.votes }}</li>
+            
+        {% endfor %}
+    </ul>
+</section>
+{% endblock content %}
