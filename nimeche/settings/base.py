@@ -48,6 +48,7 @@ INSTALLED_APPS = [
 	"django_browser_reload",
     'bootstrap5',
     'voting',
+    'accounts'
 ]
 
 MIDDLEWARE = [
