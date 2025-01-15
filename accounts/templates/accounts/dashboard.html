@@ -1,34 +1,36 @@
-{% extends "base.html" %}
-{% load static %}
-{% block content %}
+{% extends "base.html" %} {% load static %} {% block content %}
 
-<section class="positions">
-    <div class="position-card">
-      <h3 class="position-name">Registered Voters</h3>
-      <p class="position-description">{{ registered_voters }}.</p>
-    </div>
-    <div class="position-card">
-        <h3 class="position-name">Positions</h3>
-        <p class="position-description">{{ positions }}.</p>
-    </div>
-    <div class="position-card">
-        <h3 class="position-name">Candidates</h3>
-        <p class="position-description">{{ candidates }}.</p>
-    </div>
-    <div class="position-card">
-        <h3 class="position-name">Total Votes</h3>
-        <p class="position-description">{{ total_votes }}.</p>
-    </div>
+<section class="positions-dashboard">
+  <div class="position-card">
+    <h3 class="position-name">Registered Voters</h3>
+    <p class="position-description">{{ registered_voters }}.</p>
+  </div>
+  <div class="position-card">
+    <h3 class="position-name">Positions</h3>
+    <p class="position-description">{{ positions }}.</p>
+  </div>
+  <div class="position-card">
+    <h3 class="position-name">Candidates</h3>
+    <p class="position-description">{{ candidates }}.</p>
+  </div>
+  <div class="position-card">
+    <h3 class="position-name">Total Votes</h3>
+    <p class="position-description">{{ total_votes }}.</p>
+  </div>
 </section>
 <section class="winners">
-    <h3>Winners</h3>
-    <ul>
-        {% for winner in winner %}
-            <li>Position: {{ winner.position_name }}li>
-            <li>Candidate: : {{ winner.winner_name }}</li>
-            <li>Votes: {{ winner.votes }}</li>
-            
-        {% endfor %}
-    </ul>
+  <h2 class="winners-title">Winners</h2>
+
+  <div class="winners-container">
+    {% for winner in winners %}
+
+    <div class="position-card">
+        <h5 class="position-name">Position: {{ winner.position_name }}</h5>
+        <p class="position-description">Candidate: {{ winner.winner_name }}.</p>
+        <p class="position-description">Votes: {{ winner.votes }}.</p>
+    </div>
+
+    {% endfor %}
+  </div>
 </section>
 {% endblock content %}

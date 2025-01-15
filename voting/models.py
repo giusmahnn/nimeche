@@ -13,7 +13,7 @@ class BaseModel(models.Model):
 
 class Position(BaseModel):
     name = models.CharField(max_length=50)
-    slug = models.SlugField(max_length=50, unique=True, blank=True)
+    slug = models.SlugField(max_length=50, unique=True, blank=True, null=True)
     description = models.TextField(null=True, blank=True)
 
 

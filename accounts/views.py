@@ -34,14 +34,14 @@ class AdminDashboardView(LoginRequiredMixin, View):
 		positions = Position.objects.count()
 		candidates = Candidate.objects.count()
 		total_votes = Candidate.objects.aggregate(total_votes=Sum('votes'))['total_votes']
-		winner = self.get_winners()
+		winners = self.get_winners()
 
 		context = {
 			"registered_voters": registered_voters,
 			"positions": positions,
 			"candidates": candidates,
 			"total_votes": total_votes,
-			"winner": winner
+			"winners": winners
 		}
 		return render(request, "accounts/dashboard.html", context)
 
