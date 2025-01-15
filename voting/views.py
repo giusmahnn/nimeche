@@ -108,6 +108,6 @@ class MatricNumber(View):
 				"matric_number": matric_number
 			}
 		if position_slug:
-			return redirect(reverse("vote-detail", kwargs={'position_slug': position_slug}))
+			return redirect(reverse("vote-detail", kwargs={'slug': position_slug}))
 		else:
 			return redirect(reverse("home"))
