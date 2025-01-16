@@ -5,5 +5,8 @@
     </div>
     <div class="cta">
       <a href="#" class="buy-coffee-btn">Buy Us a Coffee</a>
+      {% if user.is_authenticated %}
+      <a href="{% url 'admin-logout' %}" class="logout-btn">Logout</a>
+      {% endif %}
     </div>
   </nav>
