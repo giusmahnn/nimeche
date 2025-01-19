@@ -33,4 +33,21 @@
     {% endfor %}
   </div>
 </section>
+
+<section class="toggle-voting mt-4 text-center">
+  <div></div>
+    <h2>Toggle Action</h2>
+    <p>The action is currently: {{ voting_status.can_vote|yesno:"Active,Inactive" }}</p>
+    <form method="post" action="{% url 'toggle-voting-status' %}">
+      {% csrf_token %}
+      <button type="submit" >
+        {% if voting_status.can_vote %}
+          Stop Voting
+        {% else %}
+          Start Voting
+        {% endif %}
+      </button>
+    </form>
+  </div>
+</section>
 {% endblock content %}

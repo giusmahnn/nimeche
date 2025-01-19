@@ -1,5 +1,15 @@
 {% extends "base.html" %}
 {% load static %} {% block title %} Vote Here {% endblock title %} {% block content %}
+
+{% if messages %}
+  <div class="alerts">
+    {% for message in messages %}
+      <div class="alert {% if message.tags %}alert-{{ message.tags }}{% endif %}">
+        {{ message }}
+      </div>
+    {% endfor %}
+  </div>
+{% endif %}
 <!-- Hero -->
 <section class="hero">
   <div class="hero-content">

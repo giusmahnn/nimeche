@@ -32,7 +32,6 @@
         <h3 class="candidate-name">{{ candidate.name }}</h3>
         <p class="candidate-position">Running for: {{ position.name }}</p>
         <p class="candidate-bio">{{ candidate.introduction }}</p>
-        <p class="candidate-votes">Votes: {{ candidate.votes }}</p>
         <a href="{% url 'votes' candidate.id %}" class="candidate-vote-btn">Vote</a>
       </div>
     </div>

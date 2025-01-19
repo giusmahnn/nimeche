@@ -1,3 +1,4 @@
+from django.http import JsonResponse
 from django.shortcuts import redirect, render
 from django.contrib.auth import authenticate, login as auth_login
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -5,6 +6,7 @@ from django.urls import reverse_lazy
 from django.views import View
 from django.contrib import messages
 from django.db.models import Sum
+from accounts.models import VotingStatus
 from voting.models import Candidate, Position, Voter
 
 # Create your views here.
@@ -35,13 +37,15 @@ class AdminDashboardView(LoginRequiredMixin, View):
 		candidates = Candidate.objects.count()
 		total_votes = Candidate.objects.aggregate(total_votes=Sum('votes'))['total_votes']
 		winners = self.get_winners()
+		voting_status = VotingStatus.objects.first()
 
 		context = {
 			"registered_voters": registered_voters,
 			"positions": positions,
 			"candidates": candidates,
 			"total_votes": total_votes,
-			"winners": winners
+			"winners": winners,
+			"voting_status": voting_status,
 		}
 		return render(request, "accounts/dashboard.html", context)
 
@@ -59,6 +63,19 @@ class AdminDashboardView(LoginRequiredMixin, View):
 					"total_votes": position.candidate_set.aggregate(total_votes=Sum('votes'))['total_votes'] or 0,
 				})
 		return winners
+	
+
+
+class ToggleVotingStatusView(LoginRequiredMixin, View):
+	login_url = reverse_lazy("admin-login")
+	def post(self, request):
+		voting_status = VotingStatus.objects.first()
+		voting_status.can_vote = not voting_status.can_vote  
+		voting_status.save()
+		messages.success(request, f"Voting status has been {'enabled' if voting_status.can_vote else 'disabled'}.")
+		return redirect("admin-dashboard", username=request.user.username)
+	
+
 
 
 
