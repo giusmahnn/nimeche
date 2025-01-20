@@ -440,6 +440,90 @@ a {
 	margin-top: 2rem;
 }
 
+/* General Styling for Button Section */
+.button {
+  background-color: #ffffff; /* White background for clean contrast */
+  border: 1px solid #ddd;    /* Subtle border for separation */
+  border-radius: 8px;        /* Rounded corners for a smooth look */
+  padding: 20px;             /* Spacing inside the section */
+  margin: 20px auto;         /* Center alignment with spacing */
+  max-width: 600px;          /* Restrict width for readability */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+  text-align: center;        /* Center-align content */
+}
+
+/* Container Styling */
+.button-container {
+  display: flex;
+  flex-direction: column; /* Stack elements vertically */
+  align-items: center;    /* Center align elements horizontally */
+}
+
+/* Heading Styling */
+.button-container h2 {
+  font-size: 20px;         /* Medium font size for the heading */
+  color: #333;             /* Dark gray for readability */
+  margin-bottom: 10px;     /* Space below the heading */
+  font-weight: bold;       /* Emphasize the heading */
+}
+
+/* Paragraph Styling */
+.button-container p {
+  font-size: 16px;         /* Slightly smaller font for the description */
+  color: #666;             /* Medium gray for a softer tone */
+  margin-bottom: 15px;     /* Space below the paragraph */
+}
+
+/* Button Styling */
+.toggle-button {
+  background-color: #007bff;    /* Primary blue color */
+  color: #ffffff;              /* White text for contrast */
+  border: none;                /* Remove default button border */
+  border-radius: 6px;          /* Rounded corners */
+  padding: 10px 20px;          /* Add padding for a clickable size */
+  font-size: 16px;             /* Readable font size */
+  cursor: pointer;             /* Pointer cursor for interactivity */
+  transition: background-color 0.3s ease; /* Smooth hover effect */
+}
+
+/* Hover State */
+.toggle-button:hover {
+  background-color: #0056b3;   /* Darker blue on hover */
+}
+
+/* Disabled Button State */
+.toggle-button:disabled {
+  background-color: #ccc;      /* Light gray background */
+  color: #666;                 /* Dim text color */
+  cursor: not-allowed;         /* Not-allowed cursor for disabled state */
+}
+
+/* General Styling for Dashboard Section */
+.dashboard {
+  background-color: #f9f9f9; /* Light background for contrast */
+  border-radius: 8px;       /* Smooth rounded corners */
+  padding: 20px;            /* Spacing inside the section */
+  margin: 20px auto;        /* Center alignment with spacing */
+  max-width:700%;         /* Limit the maximum width */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+}
+
+/* Title Styling */
+.dashboard-title {
+  font-size: 30px;          /* Large, readable title font size */
+  color: #333;              /* Dark gray for good contrast */
+  margin-bottom: 10px;      /* Space below the title */
+  font-weight: bold;        /* Emphasize the title */
+}
+
+/* Description Styling */
+.dashboard-description {
+  font-size: 16px;          /* Slightly smaller font for the description */
+  color: #555;              /* Medium gray for a softer tone */
+  line-height: 1.6;         /* Improve readability with line spacing */
+}
+
+
 @media (min-width: 768px) {
   .positions-dashboard {
     flex-direction: row;
