@@ -4,6 +4,18 @@ from django.utils.text import slugify
 # Create your models here.
 
 class BaseModel(models.Model):
+    """
+    BaseModel is an abstract base class for Django models that provides
+    created_at and updated_at fields to track the creation and modification
+    times of model instances.
+
+    Attributes:
+        created_at (DateTimeField): The date and time when the instance was created.
+        updated_at (DateTimeField): The date and time when the instance was last updated.
+
+    Meta:
+        abstract (bool): Indicates that this is an abstract base class and should not be used to create any database table.
+    """
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
@@ -12,6 +24,18 @@ class BaseModel(models.Model):
 
 
 class Position(BaseModel):
+    """
+    A model representing a position in the voting system.
+
+    Attributes:
+        name (str): The name of the position.
+        slug (str): A unique slug for the position, generated from the name if not provided.
+        description (str): A description of the position.
+
+    Methods:
+        save(*args, **kwargs): Overrides the save method to automatically generate a unique slug if not provided.
+        __str__(): Returns a string representation of the position, which is its name.
+    """
     name = models.CharField(max_length=50)
     slug = models.SlugField(max_length=50, unique=True, blank=True, null=True)
     description = models.TextField(null=True, blank=True)

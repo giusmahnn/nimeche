@@ -9,7 +9,7 @@ VoteSmart is a student election system that allows students to vote for their pr
   - [Features](#features)
   - [Installation](#installation)
   - [Usage](#usage)
-  - [API Endpoints](#api-endpoints)
+  - [Endpoints](#endpoints)
   - [Contributing](#contributing)
   - [Future Features](#future-features)
 
@@ -75,14 +75,11 @@ VoteSmart is a student election system that allows students to vote for their pr
 2. Log in as an admin to manage elections and view the dashboard.
 3. Voters can log in using their matric number and cast their votes.
 
-## API Endpoints
+## Endpoints
 
-- `GET /api/voters/`: Retrieve a list of voters.
-- [POST /api/voters/](http://_vscodecontentref_/3): Create a new voter.
-- `GET /api/candidates/`: Retrieve a list of candidates.
-- [POST /api/candidates/](http://_vscodecontentref_/4): Create a new candidate.
-- `GET /api/positions/`: Retrieve a list of positions.
-- [POST /api/positions/](http://_vscodecontentref_/5): Create a new position.
+- `GET detail/<slug:slug>/`: Retrieve a list of candidates for a particular position.
+- `POST matric-number/`: Matric Number Validation.
+- `POST custom-login/`: Admin login.
 
 ## Contributing
 

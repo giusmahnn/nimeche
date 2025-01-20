@@ -9,6 +9,18 @@ from voting.models import Candidate, Position, Voter
 
 
 class HomePage(View):
+	"""
+	HomePage view for displaying the home page of the voting application.
+
+	Methods:
+		get(request):
+			Handles GET requests to the home page.
+			Retrieves all Position objects along with their related Candidate objects.
+			Renders the 'voting/home.html' template with the retrieved positions.
+
+	Attributes:
+		None
+	"""
 	def get(self, request):
 		position = Position.objects.all().prefetch_related('candidate_set')
 		context = {
@@ -18,6 +30,24 @@ class HomePage(View):
 	
 
 class DetailPage(View):
+	"""
+	View to handle the detail page for voting.
+
+	Methods
+	-------
+	get(request, slug):
+		Handles GET requests to display the voting detail page.
+		If voting is allowed and the voter is not in session, redirects to matric number page.
+		If voting is allowed and the voter is in session, displays the voting detail page with candidates.
+		If voting is not allowed, redirects to the home page with an error message.
+
+	Parameters
+	----------
+	request : HttpRequest
+		The HTTP request object.
+	slug : str
+		The slug of the position to be voted on.
+	"""
 	def get(self, request, slug):
 		voting_status = VotingStatus.objects.first()
 		if voting_status.can_vote:
@@ -43,8 +73,37 @@ class DetailPage(View):
 
 
 class VotesView(View):
+	"""
+	View to handle voting actions.
+
+	Methods
+	-------
+	get(request, candidate_id)
+		Handles GET requests to record a vote for a candidate.
+
+	Parameters
+	----------
+	request : HttpRequest
+		The HTTP request object.
+	candidate_id : int
+		The ID of the candidate being voted for.
+
+	Returns
+	-------
+	HttpResponse
+		Redirects to the appropriate page based on the voting status and validation checks.
+
+	Behavior
+	--------
+	- Checks if voting is allowed based on the voting status.
+	- Validates voter information based on session data and settings.
+	- Records the vote if all validations pass.
+	- Updates the voter's voting status in the database or session.
+	- Provides appropriate messages to the user based on the outcome.
+	"""
 	def get(self, request, candidate_id):
 		voting_status = VotingStatus.objects.first()
+		# Controls voting status
 		if voting_status.can_vote:
 			candidate = get_object_or_404(Candidate, id=candidate_id)
 			voter_data = request.session.get("voter")
@@ -55,8 +114,8 @@ class VotesView(View):
 
 			matric_number = voter_data.get("matric_number")
 			# ip_address = voter_data.get("ip_address")
-
-			if settings.ENABLE_MATRIC_NUMBER_VALIDATION:
+			# Controls matric number validation T/F
+			if settings.ENABLE_MATRIC_NUMBER_VALIDATION: 
 				voter = Voter.objects.filter(matric_number=matric_number).first()
 				if not voter:
 					messages.error(request, "Invalid voter information.")
@@ -93,7 +152,21 @@ class VotesView(View):
 
 class MatricNumber(View):
 	"""
-	Handles the matric number validation process for voters.
+	MatricNumber View handles the GET and POST requests for matric number validation.
+	Methods:
+		get(request):
+			Renders the matric-number.html template.
+		post(request):
+			Processes the matric number submitted via POST request.
+			- Converts the matric number to uppercase.
+			- Retrieves the position slug from the session.
+			- If matric number validation is enabled in settings:
+				- Attempts to find a Voter with the given matric number.
+				- If found, stores the matric number in the session and redirects to the vote-detail page.
+				- If not found, displays an error message and redirects to the matric_number page.
+			- If matric number validation is disabled:
+				- Stores the matric number in the session.
+			- Redirects to the vote-detail page if position slug is available, otherwise redirects to the home page.
 	"""
 	def get(self, request):
 		return render(request, "voting/matric-number.html")

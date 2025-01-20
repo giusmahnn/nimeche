@@ -12,6 +12,21 @@ from voting.models import Candidate, Position, Voter
 # Create your views here.
 
 class LoginView(View):
+	"""
+	A view that handles the login functionality for the admin.
+	Methods
+	-------
+	get(request):
+		Renders the admin login page.
+	post(request):
+		Authenticates the user based on the provided username and password.
+		If authentication is successful, redirects to the admin dashboard.
+		If authentication fails, displays an error message and redirects back to the login page.
+	Parameters
+	----------
+	request : HttpRequest
+		The request object containing metadata about the request.
+	"""
 	
 	def get(self, request):
 		return render(request, "accounts/admin-login.html")
@@ -30,6 +45,27 @@ class LoginView(View):
 
 
 class AdminDashboardView(LoginRequiredMixin, View):
+	"""
+	View to display the admin dashboard.
+
+	Attributes:
+		login_url (str): URL to redirect to for login if the user is not authenticated.
+
+	Methods:
+		get(request, username):
+			Handles GET requests to display the admin dashboard.
+			Args:
+				request (HttpRequest): The request object.
+				username (str): The username of the admin.
+			Returns:
+				HttpResponse: The response object with the rendered dashboard template.
+
+		get_winners():
+			Retrieves the winners for each position.
+			Returns:
+				list: A list of dictionaries containing the position name, winner name, 
+					  winner votes, and total votes for each position.
+	"""
 	login_url = reverse_lazy("admin-login")
 	def get(self, request, username):
 		registered_voters = Voter.objects.count()
@@ -67,6 +103,22 @@ class AdminDashboardView(LoginRequiredMixin, View):
 
 
 class ToggleVotingStatusView(LoginRequiredMixin, View):
+	"""
+	View to toggle the voting status.
+
+	This view requires the user to be logged in. It handles POST requests to toggle the 
+	voting status (enabled/disabled) and provides feedback to the user via messages.
+
+	Attributes:
+		login_url (str): URL to redirect to if the user is not logged in.
+
+	Methods:
+		post(request):
+			Handles POST requests to toggle the voting status.
+			Updates the `can_vote` attribute of the first `VotingStatus` object.
+			Displays a success message indicating the new voting status.
+			Redirects to the admin dashboard with the username of the logged-in user.
+	"""
 	login_url = reverse_lazy("admin-login")
 	def post(self, request):
 		voting_status = VotingStatus.objects.first()
@@ -80,6 +132,12 @@ class ToggleVotingStatusView(LoginRequiredMixin, View):
 
 
 class LogoutView(View):
+	"""
+	LogoutView handles the user logout process.
+
+	Methods:
+		get(request): Logs out the user by flushing the session and redirects to the admin login page.
+	"""
 	def get(self, request):
 		request.session.flush()
 		return redirect("admin-login")
