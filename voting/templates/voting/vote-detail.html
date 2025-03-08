@@ -27,8 +27,8 @@
   <div class="candidates-container">
     {% for candidate in candidates %}
     <div class="candidate-card">
-      <!-- <img src="{{ candidate.image }}" alt="Candidate Image" class="candidate-image"> -->
-      <img src="https://drive.google.com/open?id=1EhYq8SjgnQob3m3dNWbj04uf6RwJqb91" alt="Candidate Image" class="candidate-image">
+      <img src="{{ candidate.image.url }}" alt="Candidate Image" class="candidate-image">
+      <!-- <img src="https://drive.google.com/open?id=1EhYq8SjgnQob3m3dNWbj04uf6RwJqb91" alt="Candidate Image" class="candidate-image"> -->
       <div class="candidate-details">
         <h3 class="candidate-name">{{ candidate.name }}</h3>
         <p class="candidate-position">Running for: {{ position.name }}</p>

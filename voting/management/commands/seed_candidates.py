@@ -70,7 +70,7 @@ class Command(BaseCommand):
     help = 'Seed the database with candidates from a CSV file'
 
     def handle(self, *args, **kwargs):
-        file_path = '/home/remigius/projects/nimeche/candidates.csv'  # Update this path to the actual location of your CSV file
+        file_path = BASE_DIR / 'candidates.csv'  # Update this path to the actual location of your CSV file
 
         with open(file_path, newline='', encoding='utf-8') as csvfile:
             reader = csv.DictReader(csvfile)
