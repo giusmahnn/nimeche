@@ -74,6 +74,8 @@ class AdminDashboardView(LoginRequiredMixin, View):
 		total_votes = Candidate.objects.aggregate(total_votes=Sum('votes'))['total_votes']
 		winners = self.get_winners()
 		voting_status = VotingStatus.objects.first()
+    	
+		voters_who_voted = Voter.objects.filter(voted_position__isnull=False).distinct().count() 
 
 		context = {
 			"registered_voters": registered_voters,
@@ -82,6 +84,7 @@ class AdminDashboardView(LoginRequiredMixin, View):
 			"total_votes": total_votes,
 			"winners": winners,
 			"voting_status": voting_status,
+			"total_voters": voters_who_voted
 		}
 		return render(request, "accounts/dashboard.html", context)
 

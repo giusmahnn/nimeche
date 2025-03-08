@@ -15,5 +15,10 @@ class Command(BaseCommand):
         Position.objects.all().delete()  
         Candidate.objects.all().delete()  
         Voter.objects.all().delete()  
+        # deleted_count, _ = Voter.objects.filter(matric_number__startswith="P/HND/23").delete()
+        # deleted_count, _ = Voter.objects.filter(matric_number__startswith="P/ND/24").delete()
+        # deleted_count, _ = Voter.objects.filter(matric_number__startswith="P/ND/22").delete()
+
+        # print(f"Deleted {deleted_count} incorrect voters.")
 
         self.stdout.write(self.style.SUCCESS('Successfully deleted all data from Positions, Candidates, and Voters.'))

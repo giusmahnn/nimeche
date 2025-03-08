@@ -5,6 +5,8 @@ omo
 candidates
 candidates.csv
 matric_numbers.csv
+voters.csv
+votershnd1.csv
 
 
 # Ignore Python bytecode files
