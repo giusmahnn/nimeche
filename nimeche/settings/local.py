@@ -13,3 +13,9 @@ DATABASES = {
 }
 
 ENABLE_MATRIC_NUMBER_VALIDATION = True
+
+# IPWARE_META_PRECEDENCE_ORDER
+IPWARE_META_PRECEDENCE_ORDER = (
+    'HTTP_X_FORWARDED_FOR',  # First check this header
+    'REMOTE_ADDR',           # Then check this header
+)

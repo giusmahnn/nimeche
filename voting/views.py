@@ -1,13 +1,24 @@
+from django.http import JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse
+from ipware import get_client_ip
 from django.views import View
 from django.contrib import messages
+from django.middleware.csrf import get_token
 from django.conf import settings
 from django.db.models import F
 from accounts.models import VotingStatus
-from voting.models import Candidate, Position, Voter
+from voting.models import (
+    Candidate, 
+    Position, 
+    Voter)
 
+def my_view(request):
+    ip, is_routable = get_client_ip(request)
+    print(f"Client IP: {ip}, Routable: {is_routable}")
+    return JsonResponse({"ip": ip, "is_routable": is_routable})
 
+	
 class HomePage(View):
 	"""
 	HomePage view for displaying the home page of the voting application.
@@ -169,17 +180,21 @@ class MatricNumber(View):
 			- Redirects to the vote-detail page if position slug is available, otherwise redirects to the home page.
 	"""
 	def get(self, request):
+		csrf_token = get_token(request)
+		print(f"CSRF Token: {csrf_token}")
 		return render(request, "voting/matric-number.html")
 	
 	def post(self, request):
 		matric_number = request.POST.get('matric_number').upper()
+		ip_address, is_routable = get_client_ip(request)
 		position_slug = request.session.get("position_slug")
 		if settings.ENABLE_MATRIC_NUMBER_VALIDATION:
 			# Matric number validation is enabled
 			try:
 				voter = Voter.objects.get(matric_number=matric_number)
 				request.session["voter"] = {
-                    "matric_number": voter.matric_number
+                    "matric_number": voter.matric_number,
+					"ip_address": ip_address
                 }
 			except Voter.DoesNotExist:
 				messages.error(request, "Invalid matric number.")
@@ -189,7 +204,8 @@ class MatricNumber(View):
 		else:
 			# Matric number validation is disabled
 			request.session["voter"] = {
-				"matric_number": matric_number
+				"matric_number": matric_number,
+				"ip_address": ip_address,
 			}
 		if position_slug:
 			return redirect(reverse("vote-detail", kwargs={'slug': position_slug}))

@@ -45,7 +45,6 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 	"django_browser_reload",
-    'bootstrap5',
     'voting',
     'accounts'
 ]

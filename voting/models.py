@@ -60,7 +60,8 @@ class Candidate(BaseModel):
     name = models.CharField(max_length=100)
     introduction = models.TextField()
     position = models.ForeignKey(Position, on_delete=models.SET_NULL, null=True, blank=True)
-    image = models.ImageField(upload_to='candidates/', blank=True, null=True)
+    # image = models.ImageField(upload_to='candidates/', blank=True, null=True)
+    image = models.URLField(blank=True, null=True)
     votes = models.IntegerField(default=0)
     
     def __str__(self):

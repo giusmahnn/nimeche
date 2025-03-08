@@ -12,7 +12,7 @@
 {% endif %}
   <div class="form-container">
     <h1>Enter Your Matric Number</h1>
-    <form action="{% url 'matric_number' %}" method="POST">
+    <form action="{% url 'matric_number' %}" method="post">
         {% csrf_token %}
         <label for="matric_number">Matric Number</label>
         <input type="text" id="matric_number" name="matric_number" placeholder="Enter matric number" required>
