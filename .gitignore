@@ -2,6 +2,10 @@
 rem
 omo
 .venv
+candidates
+candidates.csv
+matric_numbers.csv
+
 
 # Ignore Python bytecode files
 *.pyc
