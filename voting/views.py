@@ -12,6 +12,7 @@ from voting.models import (
     Candidate, 
     Position, 
     Voter)
+import os
 
 def my_view(request):
     ip, is_routable = get_client_ip(request)
@@ -60,8 +61,9 @@ class DetailPage(View):
 		The slug of the position to be voted on.
 	"""
 	def get(self, request, slug):
-		voting_status = VotingStatus.objects.first()
-		if voting_status.can_vote:
+		# voting_status = VotingStatus.objects.first()
+		voting_status = os.getenv("VOTING_STATUS")
+		if voting_status:
 			if not request.session.get("voter"):
 				# query_params = urlencode({"position": position_id})
 				# url = f"{reverse('matric_number')}?{query_params}"

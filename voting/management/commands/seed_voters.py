@@ -4,6 +4,8 @@ from django.core.management.base import BaseCommand
 from voting.models import (
     Voter
 )
+from nimeche.settings.base import BASE_DIR
+
 
 
 # class Command(BaseCommand):
@@ -32,11 +34,12 @@ class Command(BaseCommand):
     help = "Copy voter details from a file"
 
     def handle(self, *args, **kwargs):
-        file_path = '/home/remigius/projects/nimeche/matric_numbers.csv'
+        file_path = BASE_DIR / "matric_numbers.csv"
         voters = []
         try:
             with open(file_path, 'r') as file:
                 reader = csv.DictReader(file)
+                print(reader.fieldnames)
                 for row in reader:
                     voter = Voter(
                         matric_number=row['matric_number'],
