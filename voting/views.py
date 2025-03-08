@@ -61,8 +61,8 @@ class DetailPage(View):
 		The slug of the position to be voted on.
 	"""
 	def get(self, request, slug):
-		# voting_status = VotingStatus.objects.first()
-		voting_status = os.getenv("VOTING_STATUS")
+		voting_status = VotingStatus.objects.first()
+		# voting_status = os.getenv("VOTING_STATUS")
 		if voting_status:
 			if not request.session.get("voter"):
 				# query_params = urlencode({"position": position_id})

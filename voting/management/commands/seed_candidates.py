@@ -1,8 +1,10 @@
 import csv
 import random
 from django.core.management.base import BaseCommand
+import requests
 from voting.models import Candidate, Position
 from faker import Faker  # type: ignore
+from django.core.files.base import ContentFile
 
 from nimeche.settings.base import BASE_DIR
 
@@ -63,11 +65,12 @@ def convert_google_drive_url(url):
         file_id = url.split("id=")[-1]
         return f"https://drive.google.com/uc?export=view&id={file_id}"
     return url
+
 class Command(BaseCommand):
     help = 'Seed the database with candidates from a CSV file'
 
     def handle(self, *args, **kwargs):
-        file_path = BASE_DIR / "candidates.csv"  # Update this path to the actual location of your CSV file
+        file_path = '/home/remigius/projects/nimeche/candidates.csv'  # Update this path to the actual location of your CSV file
 
         with open(file_path, newline='', encoding='utf-8') as csvfile:
             reader = csv.DictReader(csvfile)
@@ -76,12 +79,20 @@ class Command(BaseCommand):
                 position, created = Position.objects.get_or_create(name=position_name)
 
                 image_url = convert_google_drive_url(row['image'])
+                image_name = f"{row['name'].replace(' ', '_')}.jpg"  # Create a filename from the name column
 
-                Candidate.objects.create(
+                candidate = Candidate(
                     name=row['name'],
                     introduction=row['introduction'],
-                    image=image_url,
                     position=position
                 )
+
+                # Download the image and save it locally
+                if image_url:
+                    response = requests.get(image_url)
+                    if response.status_code == 200:
+                        candidate.image.save(image_name, ContentFile(response.content), save=False)
+
+                candidate.save()
 
         self.stdout.write(self.style.SUCCESS('Successfully seeded the database with candidates'))
